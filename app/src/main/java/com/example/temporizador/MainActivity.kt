@@ -1,6 +1,8 @@
 package com.example.temporizador
 
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,6 +12,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import java.sql.Time
+import java.text.SimpleDateFormat
+import java.util.*
 
 @SuppressLint("Registered")
 class MainActivity : AppCompatActivity() {
@@ -38,26 +42,27 @@ class MainActivity : AppCompatActivity() {
             startStop()
         }
         resetButton.setOnClickListener{
-
-            resetTimer()
+            getTime(mEditTextInput,this)
+//            resetTimer()
         }
-        setTextButton.setOnClickListener{
-         var input : String = mEditTextInput.text.toString()
-            if(input.length == 0){
-
-                Toast.makeText(this,"Please insert time", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            var millisecondsInput : Long = input.toLong() * 60000
-            if(millisecondsInput == 0L){
-                Toast.makeText(this,"time can not be '0'", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-
-            }
-
-            setTime(millisecondsInput)
-            mEditTextInput.setText("")
-            updateTimer()
+        mEditTextInput.setOnClickListener{
+//         var input : String = mEditTextInput.text.toString()
+//            if(input.length == 0){
+//
+//                Toast.makeText(this,"Please insert time", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//            var millisecondsInput : Long = input.toLong() * 60000
+//            if(millisecondsInput == 0L){
+//                Toast.makeText(this,"time can not be '0'", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//
+//            }
+//
+//            setTime(millisecondsInput)
+//            mEditTextInput.setText("")
+//            updateTimer()
+            getTime(mEditTextInput,this)
         }
     }
 
@@ -114,5 +119,21 @@ class MainActivity : AppCompatActivity() {
         if (seconds < 10) timeLeftText += "0"
         timeLeftText += seconds
         countDownText.text = timeLeftText
+    }
+
+    fun getTime(textView: TextView, context: Context){
+
+        val cal = Calendar.getInstance()
+
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            cal.set(Calendar.HOUR_OF_DAY, hour)
+            cal.set(Calendar.MINUTE, minute)
+
+            textView.text = SimpleDateFormat("HH:mm").format(cal.time)
+        }
+
+        textView.setOnClickListener {
+            TimePickerDialog(context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        }
     }
 }
