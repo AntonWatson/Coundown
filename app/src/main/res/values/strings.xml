@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Temporizador</string>
+    <string name="begin">Begin</string>
+    <string name="stop">Stop</string>
+    <string name="reset">reset</string>
+    <string name="minutes">minutes</string>
+    <string name="set">set</string>
+</resources>
